@@ -46,12 +46,6 @@ export default function TablePlatformComponent({ setOpenCart }: TablePlatformCom
   }
 
   useEffect(() => {
-    if (startDepartment.current) {
-      startDepartment.current?.click();
-    }
-  }, [startDepartment]);
-
-  useEffect(() => {
     departmentsService.getAllDepartments().then((response) => {
       console.log(response.data);
       setDepartments(response.data);

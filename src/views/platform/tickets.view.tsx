@@ -11,6 +11,7 @@ import authService from "../../services/auth.service";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
 import FooterComponent from "../../shared/components/Footer/footer.component";
+import ChatComponent from "../../components/platform/chat.component";
 const navigation = [
   { name: "Viajes", href: "/platform", current: false },
   { name: "Mis tickets", href: "#", current: true },
@@ -173,6 +174,7 @@ function PlatformTicketsIndex() {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
+              <ChatComponent id={"1"} />
               <TicketsTableComponents />
             </div>
             {/* /End replace */}
