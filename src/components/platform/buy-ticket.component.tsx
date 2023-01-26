@@ -2,8 +2,10 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { LockClosedIcon, TicketIcon } from "@heroicons/react/24/outline";
 import BuyOrdenComponent from "./buy-orden.component";
-import { SeatI } from "../../interfaces/seat.interface";
-
+import { SeatI } from "../../interfaces/models/seat.interface";
+import { useDispatch } from 'react-redux';
+import { addToCart, removeItem } from "../../redux/slice/cartSlice";
+import { useSelector } from "react-redux";
 function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -12,8 +14,10 @@ export default function BuyTicketComponent({
   setOpen,
   selectedTrip,
   init,
-}:any) {
-  const [selected, setSelected] = useState({} as SeatI);
+}: any) {
+  const [selected, setSelected] = useState<any>(null);
+  const dispatch = useDispatch()
+  const cart = useSelector((state: any) => state.cart);
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -40,7 +44,7 @@ export default function BuyTicketComponent({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden bg-pal1 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-70 border border-gray-700 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8  sm:w-[50rem] sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden bg-pal1 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-70 border border-gray-700 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8  sm:w-[40rem] sm:p-6">
                 <div className="p-5 border border-transparent  rounded-md">
                   <div className="grid md:grid-cols-4 grid-cols-1 ">
                     <div className="border p-2 border-gray-900 md:col-span-1 bg-pal1 items-center text-center rounded-md">
@@ -48,26 +52,34 @@ export default function BuyTicketComponent({
                         Conductor
                       </div>
                       <div className="grid grid-cols-2 mb-10">
-                        {selectedTrip.seats.map((seat:SeatI) => (
+                        {selectedTrip.seats.map((seat: SeatI) => (
                           <div key={seat.id}>
                             {!seat.isBooked ? (
-                              <button
-                                onClick={() => {
-                                  if (!selected) {
-                                    setSelected(seat);
-                                  }
-                                  if (selected?.id === seat.id) {
-                                    setSelected({} as SeatI);
-                                  }
-                                }}
-                                className={classNames(
-                                  selected?.id === seat.id
-                                    ? "px-2 py-1.5 border mt-5 border-green-500 bg-green-500 rounded-md"
-                                    : "px-2 py-1.5 border mt-5 border-indigo-500 bg-pal2 rounded-md"
-                                )}
-                              >
-                                <TicketIcon className="h-6 w-6 text-white" />
-                              </button>
+                              cart.find((item: any) => item.id === seat.id) ?
+                                <button
+                                  onClick={() => {
+                                    dispatch(removeItem({
+                                      id: seat.id,
+                                    }))
+                                  }}
+                                  className="px-2 py-1.5 border mt-5 border-green-500 bg-green-500 rounded-md"
+                                >
+                                  <TicketIcon className="h-6 w-6 text-white" />
+                                </button> : <button
+                                  onClick={() => {
+                                    dispatch(addToCart({
+                                      id: seat.id,
+                                      seat,
+                                      start_point: selectedTrip.originPoint.name,
+                                      end_point: selectedTrip.destinationPoint.name,
+                                      arrive_time: selectedTrip.departureTime,
+                                      tripId: selectedTrip.id
+                                    }))
+                                  }}
+                                  className="px-2 py-1.5 border mt-5 border-indigo-500 bg-pal2 rounded-md"
+                                >
+                                  <TicketIcon className="h-6 w-6 text-white" />
+                                </button>
                             ) : (
                               <div>
                                 <button className="px-2 py-1.5 cursor-not-allowed border mt-5 border-red-800 bg-red-800 rounded-md">

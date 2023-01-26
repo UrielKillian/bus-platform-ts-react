@@ -25,17 +25,25 @@ export default function BuyOrdenComponent({
 
   function createTicket() {
     console.log(lastName.current);
-    appService
+    let user:any = localStorage.getItem("user");
+    if (user) {
+      user = JSON.parse(user);
+      appService
       .createPassengerAndTicket({
         tripId: tripId,
         seatId: selected.id,
         passengerName: name.current,
         passengerLastName: lastName.current,
         arrivedTime: "2023-01-25T21:53:33.299Z",
+        userId: user.authenticatedUser.id,
       })
       .then((res) => {
         console.log(res);
       });
+    } else {
+      return;
+    }
+    
   }
   return (
     <div className="px-4 sm:px-6 lg:px-8">

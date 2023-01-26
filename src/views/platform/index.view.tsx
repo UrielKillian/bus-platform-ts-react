@@ -9,6 +9,7 @@ import TablePlatformComponent from "../../components/platform/table.component";
 import { useState } from "react";
 import FooterComponent from "../../shared/components/Footer/footer.component";
 import BuyCartComponent from "../../components/platform/buy-cart.component";
+import authService from "../../services/auth.service";
 
 const navigation = [
   { name: "Viajes", href: "/platform", current: true },
@@ -79,8 +80,22 @@ function PlatformIndex() {
                       </div>
                       <div className="-mr-2 flex md:hidden">
                         {/* Mobile menu button */}
+                        <button
+                            onClick={() => {
+                              setOpenCart(true);
+                            }}
+                            type="button"
+                            className="e-flex items-center mr-3 justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="sr-only">View notifications</span>
+                            <ShoppingCartIcon
+                              className="h-6 w-6"
+                              aria-hidden="true"
+                            />
+                          </button>
                         <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">Open main menu</span>
+                          
                           {open ? (
                             <XMarkIcon
                               className="block h-6 w-6"
@@ -121,6 +136,9 @@ function PlatformIndex() {
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
                         <button
+                          onClick={() => {
+                            authService.logout();
+                          }}
                           type="button"
                           className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         >

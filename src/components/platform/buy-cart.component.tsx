@@ -1,10 +1,11 @@
-import { Fragment } from 'react'
-import React from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-
-export default function BuyCartComponent({ open, setOpen }:any) {
-
+import { Fragment } from "react";
+import React from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { CurrencyDollarIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSelector } from "react-redux";
+import ItemCartComponent from "./item-cart.component";
+export default function BuyCartComponent({ open, setOpen }: any) {
+    const cart = useSelector((state: any) => state.cart);
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -26,7 +27,9 @@ export default function BuyCartComponent({ open, setOpen }:any) {
                                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                         <div className="bg-pal1 py-6 px-4 sm:px-6">
                                             <div className="flex items-center justify-between">
-                                                <Dialog.Title className="text-lg font-medium text-white">Carrito de compras</Dialog.Title>
+                                                <Dialog.Title className="text-lg font-medium text-white">
+                                                    Carrito de compras
+                                                </Dialog.Title>
                                                 <div className="ml-3 flex h-7 items-center">
                                                     <button
                                                         type="button"
@@ -40,15 +43,32 @@ export default function BuyCartComponent({ open, setOpen }:any) {
                                             </div>
                                             <div className="mt-1">
                                                 <p className="text-sm text-white">
-                                                    Todos los tickets agregados a este carrito serán comprados en un solo pago.
+                                                    Todos los tickets agregados a este carrito serán
+                                                    comprados en un solo pago.
                                                 </p>
                                             </div>
                                         </div>
                                         <div className="relative flex-1 py-6 px-4 sm:px-6">
                                             {/* Replace with your content */}
                                             <div className="absolute inset-0 py-6 px-4 sm:px-6">
-                                                <div className="h-full border-2 border-dashed border-gray-200" aria-hidden="true" />
+                                                <div className="space-y-4">
+                                                    {cart?.map((item: any) => (
+                                                        <div key={item.id}>
+                                                            <ItemCartComponent item={item} />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <div className="mt-4">
+                                                    <button
+                                                        type="button"
+                                                        className=" justify-center inline-flex w-full items-center rounded-md border border-transparent bg-pal3 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                    >
+                                                        < CurrencyDollarIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                                                        Comprar lo agregado al carrito
+                                                    </button>
+                                                </div>
                                             </div>
+
                                             {/* /End replace */}
                                         </div>
                                     </div>
@@ -59,5 +79,5 @@ export default function BuyCartComponent({ open, setOpen }:any) {
                 </div>
             </Dialog>
         </Transition.Root>
-    )
+    );
 }

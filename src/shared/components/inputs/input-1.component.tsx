@@ -1,4 +1,6 @@
-export default function Input1Component({ title, example, type, name, value }:any) {
+
+
+export default function Input1Component({ title, example, type, name, value, disabled }: any) {
   return (
     <div>
       <label htmlFor="email" className="block text-sm font-medium text-white">
@@ -14,6 +16,7 @@ export default function Input1Component({ title, example, type, name, value }:an
           id={name}
           className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           placeholder={example}
+          disabled={disabled}
         />
       </div>
     </div>

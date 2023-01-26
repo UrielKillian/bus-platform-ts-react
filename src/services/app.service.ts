@@ -9,4 +9,6 @@ class AppService {
   }
 }
 
-export default new AppService();
+const appService = new AppService();
+
+export default appService;

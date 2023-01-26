@@ -15,4 +15,6 @@ class TripService {
   }
 }
 
-export default new TripService();
+const tripService = new TripService();
+
+export default tripService;

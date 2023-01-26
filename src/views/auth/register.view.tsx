@@ -2,6 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import AlertMessage1Component from "../../shared/components/messages/AlertMessages/alert-message-1.component";
 import ErrorMessage1Component from "../../shared/components/messages/ErrorMessages/error-message.component";
 import * as Yup from "yup";
+import usersService from "../../services/users.service";
 
 export default function RegisterViewindex() {
 
@@ -16,20 +17,11 @@ export default function RegisterViewindex() {
       .required(element => <AlertMessage1Component message={"El correo es requerido."} />),
     password: Yup.string().required(
       element => <AlertMessage1Component message={"La contraseña es requerida"} />
-    ),
-    dni: Yup.string().required(
-      element => <AlertMessage1Component message={"El DNI es requerido"} />
-    ).min(8, element => <AlertMessage1Component message={"El DNI debe tener 8 dígitos."}/>).max(8, element => <AlertMessage1Component message={"El DNI debe tener 8 dígitos"} />),
-  });
+    )});
 
   const initialValues = {
     email: "",
     password: "",
-    dni: "",
-  };
-
-    const onSubmit = (values:any) => {
-    alert(JSON.stringify(values, null, 2));
   };
     const renderError = (message:any) => <div>{message}</div>;
 
@@ -60,7 +52,14 @@ export default function RegisterViewindex() {
             <Formik  initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { resetForm }) => {
-                  await onSubmit(values);
+                  usersService.register({
+                    email: values.email,
+                    password: values.password,
+                  }).then(
+                    response => {
+                      console.log(response);
+                    },
+                  )
                   resetForm();
                 }}>
             <Form className="space-y-6" action="#" method="POST">
@@ -98,23 +97,6 @@ export default function RegisterViewindex() {
                   </div>
                   <div className="mt-1">
                     <ErrorMessage name="password" render={renderError} />
-                    </div>
-              </div>
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-pal4">
-                  DNI
-                </label>
-                <div className="mt-1">
-                  <Field
-                    id="dni"
-                    name="dni"
-                    type="text"
-                    required
-                    className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                  />
-                  </div>
-                  <div className="mt-1">
-                    <ErrorMessage name="dni" render={renderError} />
                     </div>
               </div>
               <div>

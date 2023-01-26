@@ -7,6 +7,11 @@ class TicketService {
   getTicketByOne(id: any) {
     return http.get(`/tickets/${id}`);
   }
+  getTicketByUser(id: any) {
+    return http.get(`/tickets/user/${id}`);
+  }
 }
 
-export default new TicketService();
+const ticketService = new TicketService();
+
+export default ticketService;

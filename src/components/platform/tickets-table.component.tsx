@@ -33,8 +33,10 @@ export default function TicketsTableComponents() {
     },
   });
   useEffect(() => {
+    let user: any = localStorage.getItem("user");
+     user = JSON.parse(user);
     setTimeout(() => {
-      ticketService.getAllTicket().then((response) => {
+      ticketService.getTicketByUser(user.authenticatedUser.id).then((response) => {
         console.log(response.data);
         setTickets(response.data);
       });
@@ -81,7 +83,7 @@ export default function TicketsTableComponents() {
                       scope="col"
                       className="px-4 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
-                      Fecha y hora
+                      Fecha y hora de salida
                     </th>
                     <th
                       scope="col"
@@ -122,10 +124,24 @@ export default function TicketsTableComponents() {
                         {ticket.trip.destinationPoint.name}
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                        {ticket.arrivalDate}
+                                <strong>{new Date(ticket.arrivalDate).toLocaleDateString(
+                            "en-gb"
+                        )} - {Intl.DateTimeFormat("en", {
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                        }).format(new Date(ticket.arrivalDate))}</strong>
+                 
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                        {ticket.trip.departureTime}
+                                 <strong>{new Date(ticket.trip.departureTime).toLocaleDateString(
+                            "en-gb"
+                        )} - {Intl.DateTimeFormat("en", {
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                        }).format(new Date(ticket.trip.departureTime))}</strong>
+                 
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
                         {ticket.passenger.name} {ticket.passenger.lastName}

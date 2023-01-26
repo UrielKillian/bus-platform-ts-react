@@ -6,15 +6,20 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import TicketsTableComponents from "../../components/platform/tickets-table.component";
-
+import usersService from "../../services/users.service";
+import authService from "../../services/auth.service";
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 const navigation = [
   { name: "Viajes", href: "/platform", current: false },
   { name: "Mis tickets", href: "#", current: true },
 ];
-function classNames(...classes :any[]) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+
 function PlatformTicketsIndex() {
+    let navigate: NavigateFunction = useNavigate();
   return (
     <>
       {/*
@@ -26,8 +31,8 @@ function PlatformTicketsIndex() {
         ```
       */}
       <div className="min-h-full">
-        <div className="bg-gray-800 pb-32">
-          <Disclosure as="nav" className="bg-gray-800">
+        <div className="bg-[url('https://images.unsplash.com/photo-1606021643583-b707947f1f02?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80')] bg-cover bg-center pb-32">
+          <Disclosure as="nav" className="bg-pal1">
             {({ open }) => (
               <>
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -57,9 +62,13 @@ function PlatformTicketsIndex() {
                       <div className="hidden md:block">
                         <div className="ml-4 flex items-center md:ml-6">
                           <div className="text-white mr-3">
-                            <label>DNI: 75181614</label>
+                            <label>{usersService.getActualEmail()}</label>
                           </div>
                           <button
+                            onClick={() => {
+                              authService.logout();
+                              navigate('/login');
+                            }}
                             type="button"
                             className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
@@ -127,10 +136,10 @@ function PlatformTicketsIndex() {
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium leading-none text-white">
-                          75181614
+                          {usersService.getActualEmail()}
                         </div>
                         <div className="text-sm font-medium leading-none text-gray-400">
-                          DNI Actual
+                          Correo:
                         </div>
                       </div>
                     </div>

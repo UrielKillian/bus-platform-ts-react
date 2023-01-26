@@ -6,4 +6,6 @@ class DepartmentService {
   }
 }
 
-export default new DepartmentService();
+const departmentService = new DepartmentService();
+
+export default departmentService;

@@ -18,7 +18,7 @@ export default function ViewTicketComponent({ open, setOpen, ticket }:any) {
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -30,7 +30,7 @@ export default function ViewTicketComponent({ open, setOpen, ticket }:any) {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div className="flex font-sans justify-center items-center">
-                  <div className="w-full max-w-sm mx-4 shadow-lg rounded-lg">
+                  <div className=" mx-4 shadow-lg rounded-lg">
                     <div className="py-4 px-6 flex justify-between items-end bg-white rounded-lg rounded-b-none">
                       <div>
                         <img
@@ -46,23 +46,16 @@ export default function ViewTicketComponent({ open, setOpen, ticket }:any) {
                       </div>
                     </div>
 
-                    <div className="flex bg-red justify-around items-center py-16 px-6 sm:px-12 bg-destination">
+                    <div className="flex bg-[url('https://images.unsplash.com/photo-1518206075495-4e901709d372?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80')] bg-cover justify-around items-center py-16 px-6 sm:px-12 bg-destination">
                       <div className="flex-1 text-5xl font-bold text-white tracking-wide text-shadow-lg">
-                        ON
-                      </div>
-                      <div className="mx-8">
-                        <img
-                          className="h-12"
-                          src="http://www.freeiconspng.com/uploads/description-white-plane-icon-2-27.png"
-                          alt=""
-                        />
+                        Pasaje
                       </div>
                       <div className="flex-1 text-right text-5xl font-bold text-white tracking-wide text-shadow-lg">
                         ROAD
                       </div>
                     </div>
 
-                    <div className="flex bg-purple-400 px-6 sm:px-12 py-4">
+                    <div className="grid grid-cols-3 bg-purple-400 px-6  py-4">
                       <div className="w-2/5">
                         <span className="uppercase text-purple-lighter block tracking-wide mb-1 font-thin text-xs">
                           Fecha

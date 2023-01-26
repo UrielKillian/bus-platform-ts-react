@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ItemI } from "../interfaces/item.interface";
+import { ItemI } from "../../interfaces/models/item.interface";
 
 export interface CounterState {
   cart: ItemI[];
@@ -39,10 +39,8 @@ const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
-      const removeItem = state.cart.filter(
-        (item) => item.id !== action.payload
-      );
-      state.cart = removeItem;
+      const index = state.cart.findIndex((item) => item.id === action.payload);
+      state.cart.splice(index);
     },
   },
 });

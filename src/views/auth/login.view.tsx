@@ -1,11 +1,13 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { redirect } from "react-router-dom";
 import * as Yup from "yup";
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import ErrorMessage1Component from "../../shared/components/messages/ErrorMessages/error-message.component";
 import AlertMessage1Component from "../../shared/components/messages/AlertMessages/alert-message-1.component";
-
+import { LoginI } from "../../interfaces/models/login.interface";
+import authService from "../../services/auth.service";
 export default function AuthView() {
+  let navigate: NavigateFunction = useNavigate();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email(element =>   <ErrorMessage1Component
@@ -25,11 +27,17 @@ export default function AuthView() {
     password: "",
   };
 
-  const onSubmit = (values:any) => {
-    alert(JSON.stringify(values, null, 2));
-  };
+  const renderError = (message: any) => <div>{message}</div>;
+  
+  function login(loginDto: LoginI) {
+    authService.login(loginDto).then(() => {
+      navigate('/platform');
+      window.location.reload();
+    }, (error) => {
+      console.log(error);
+    });
 
-  const renderError = (message:any) => <div>{message}</div>;
+  }
 
   return (
     <>
@@ -53,8 +61,10 @@ export default function AuthView() {
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { resetForm }) => {
-                  await onSubmit(values);
-                  resetForm();
+                  login({
+                    email: values.email,
+                    password: values.password,
+                  })
                 }}
               >
                 <Form>
