@@ -1,36 +1,57 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon, IdentificationIcon } from "@heroicons/react/24/outline";
 import ErrorMessage1Component from "../../shared/components/messages/ErrorMessages/error-message.component";
 import AlertMessage1Component from "../../shared/components/messages/AlertMessages/alert-message-1.component";
 import { LoginI } from "../../interfaces/models/login.interface";
 import authService from "../../services/auth.service";
+import RememberPasswordComponent from "../../components/platform/remember-password.component";
+import { useState } from "react";
+import { useEffect } from "react";
+import { A1Styled } from "../../styled-components/a/a-1.styled";
 export default function AuthView() {
+  const [openRemember, setOpenRemember] = useState(false);
+  const [remember, setRemember] = useState(false);
+
   let navigate: NavigateFunction = useNavigate();
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email(element =>   <ErrorMessage1Component
-          message={"Correo electrónico no válido"}
-          item_1={"El correo debe tener un dominio válido."}
-          item_2={"Revisa que el correo ingresado sea el correcto."}
+      .email(element => <ErrorMessage1Component
+        message={"Correo electrónico no válido"}
+        item_1={"El correo debe tener un dominio válido."}
+        item_2={"Revisa que el correo ingresado sea el correcto."}
       />
       )
-      .required(element =><AlertMessage1Component message={"El correo es requerido."} />),
+      .required(element => <AlertMessage1Component message={"El correo es requerido."} />),
     password: Yup.string().required(
-     element => <AlertMessage1Component message={"La contraseña es requerida"} />
+      element => <AlertMessage1Component message={"La contraseña es requerida"} />
     ),
   });
 
   const initialValues = {
-    email: "",
+    email: localStorage.getItem("email") || "",
     password: "",
   };
 
   const renderError = (message: any) => <div>{message}</div>;
-  
+  const handleChange = (e: any) => {
+    const { checked } = e.target;
+    if (checked) {
+      setRemember(true);
+      localStorage.setItem("remember", JSON.stringify(remember));
+    } else {
+      setRemember(false);
+      localStorage.setItem("remember", JSON.stringify(remember));
+    }
+  };
   function login(loginDto: LoginI) {
     authService.login(loginDto).then(() => {
+      if (remember === true) {
+        localStorage.setItem("email", loginDto.email);
+      } else {
+        localStorage.removeItem("email");
+      }
       navigate('/platform');
       window.location.reload();
     }, (error) => {
@@ -38,6 +59,13 @@ export default function AuthView() {
     });
 
   }
+
+  useEffect(() => {
+    if (window.localStorage.getItem("remember") === "false") {
+      setRemember(true);
+    }
+  }, []);
+
 
   return (
     <>
@@ -56,7 +84,7 @@ export default function AuthView() {
             </div>
 
             <div className="mt-8">
-              
+
               <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
@@ -120,6 +148,8 @@ export default function AuthView() {
                           id="remember-me"
                           name="remember-me"
                           type="checkbox"
+                          onChange={handleChange}
+                          checked={remember}
                           className="h-4 w-4 rounded border-gray-300 text-pal1 focus:ring-indigo-500"
                         />
                         <label
@@ -131,24 +161,41 @@ export default function AuthView() {
                       </div>
 
                       <div className="text-sm">
-                        <a
-                          href="/remember"
+                        <button
+                          onClick={() => {
+                            setOpenRemember(true);
+                          }}
+                          type="button"
                           className="font-medium text-pal3 hover:text-red-700"
                         >
                           ¿Olvidaste tu contraseña?
-                        </a>
+                        </button>
                       </div>
                     </div>
 
                     <div>
                       <button
-                                              onClick={event => console.log(event)}
+                        onClick={event => console.log(event)}
                         type="submit"
                         className="flex cursor-pointer w-full justify-center rounded-md border border-transparent bg-pal3 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-pal3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                       >
                         <ArrowLeftOnRectangleIcon className=" h-5 w-5 text-white mr-2" />
                         <label className="">Ingresar</label>
                       </button>
+                    </div>
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300" />
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="bg-white px-2 text-gray-500"> O</span>
+                      </div>
+                    </div>
+                    <div>
+                      <A1Styled href="/register">
+                        <IdentificationIcon className="h-5 w-5 text-white mr-2" />
+                        Crear cuenta
+                      </A1Styled>
                     </div>
                   </div>
                 </Form>
@@ -163,6 +210,7 @@ export default function AuthView() {
             alt=""
           />
         </div>
+        <RememberPasswordComponent open={openRemember} setOpen={setOpenRemember} />
       </div>
     </>
   );

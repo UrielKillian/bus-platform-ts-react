@@ -6,24 +6,44 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 
+export interface SelectIComponentI {
+  title: string;
+  items: any[];
+  selected: any;
+  setSelected: any;
+  className?: string;
+  inputRef?: any;
+  inputAnotherRef?: any
+}
 export default function Select1Component({
   title,
   items,
   selected,
   setSelected,
   className,
-}:any) {
-  useEffect(() => {}, [items, setSelected]);
+  inputRef,
+  inputAnotherRef
+}: SelectIComponentI) {
+
+  function handleSelect(item: any) {
+    setSelected(item);
+    if (inputAnotherRef.current) {
+      inputAnotherRef.current?.click();
+    }
+  }
+
+
+  useEffect(() => { }, [items, setSelected]);
   return (
     <div>
-      <Listbox value={selected} onChange={setSelected}>
+      <Listbox value={selected} onChange={handleSelect}>
         {({ open }) => (
           <>
             <Listbox.Label className={classNames(className)}>
               {title}
             </Listbox.Label>
             <div className="relative mt-1">
-              <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+              <Listbox.Button ref={inputRef} className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
                 <span className="block truncate">{selected.name}</span>
                 <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                   <ChevronUpDownIcon
@@ -41,7 +61,7 @@ export default function Select1Component({
                 leaveTo="opacity-0"
               >
                 <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {items.map((person:any) => (
+                  {items.map((person: any) => (
                     <Listbox.Option
                       key={person.id}
                       className={({ active }) =>

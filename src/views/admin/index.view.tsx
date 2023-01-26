@@ -4,7 +4,7 @@ import AdminTableComponent from "../../components/admin/table.component";
 
 const navigation = [{ name: "Viajes", href: "/admin", current: true }];
 
-function classNames(...classes:any[]) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function AdminIndex() {
@@ -19,12 +19,12 @@ function AdminIndex() {
         ```
       */}
       <div className="min-h-full">
-        <div className="bg-admin2 pb-32">
-          <Disclosure as="nav" className="bg-admin2">
+        <div className="bg-[url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1311&q=80')] bg-cover bg-center pb-32">
+          <Disclosure as="nav" className="bg-admin4">
             {({ open }) => (
               <>
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                  <div className="border-b border-admin3">
+                  <div >
                     <div className="flex h-16 items-center justify-between px-4 sm:px-0">
                       <div className="flex items-center">
                         <div className="hidden md:block">
@@ -35,7 +35,7 @@ function AdminIndex() {
                                 href={item.href}
                                 className={classNames(
                                   item.current
-                                    ? "bg-gray-900 text-white"
+                                    ? "bg-admin3 text-white"
                                     : "text-gray-300 hover:bg-gray-700 hover:text-white",
                                   "px-3 py-2 rounded-md text-sm font-medium"
                                 )}
@@ -106,7 +106,7 @@ function AdminIndex() {
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold tracking-tight text-white">
-                Mis viajes
+                Administración de viajes
               </h1>
             </div>
           </header>

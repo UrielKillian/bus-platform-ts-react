@@ -1,7 +1,12 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 
-export default function ErrorMessage1Component({ message, item_1, item_2 }:any) {
+export interface ErrorMessage1ComponentI {
+    message: string;
+    item_1: string;
+    item_2: string;
+}
+export default function ErrorMessage1Component({ message, item_1, item_2 }: ErrorMessage1ComponentI) {
     return (
         <>
             <div className="rounded-md bg-red-50 p-4">

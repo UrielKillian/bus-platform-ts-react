@@ -3,9 +3,15 @@ import { Transition } from '@headlessui/react'
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { XMarkIcon } from '@heroicons/react/20/solid'
 
+export interface CheckNotificationComponentI {
+    title: string;
+    message: string;
+    show: boolean;
+    setShow: any;
+}
 export default function CheckNotificationComponent({
     title, message, show, setShow
-}: any) {
+}: CheckNotificationComponentI) {
 
     return (
         <>

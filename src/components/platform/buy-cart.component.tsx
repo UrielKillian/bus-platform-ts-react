@@ -6,7 +6,13 @@ import { useSelector } from "react-redux";
 import ItemCartComponent from "./item-cart.component";
 import appService from "../../services/app.service";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-export default function BuyCartComponent({ open, setOpen }: any) {
+
+export interface BuyCartComponentI {
+    open: boolean;
+    setOpen: any;
+    setXNotificationMessage: any;
+}
+export default function BuyCartComponent({ open, setOpen, setXNotificationMessage }: BuyCartComponentI) {
     let navigate: NavigateFunction = useNavigate();
     const cart = useSelector((state: any) => state.cart);
     function createTicket() {
@@ -15,22 +21,25 @@ export default function BuyCartComponent({ open, setOpen }: any) {
             user = JSON.parse(user);
             const canIBuy = cart.find((item: any) => item.canBuy === false)
             if (!canIBuy) {
-                cart.map((item: any) => {
-                    appService
-                        .createPassengerAndTicket({
-                            tripId: item.tripId,
-                            seatId: item.id,
-                            passengerName: item.name,
-                            passengerLastName: item.lastName,
-                            arrivedTime: "2024-01-25T21:53:33.299Z",
-                            userId: user.authenticatedUser.id,
-                        })
-                        .then((res) => {
-                            console.log(res);
-                        });
-
-                })
-                navigate('/platform/tickets');
+                if (cart.length < 1) {
+                    setXNotificationMessage(true);
+                } else {
+                    cart.map((item: any) => {
+                        appService
+                            .createPassengerAndTicket({
+                                tripId: item.tripId,
+                                seatId: item.id,
+                                passengerName: item.name,
+                                passengerLastName: item.lastName,
+                                arrivedTime: "2024-01-25T21:53:33.299Z",
+                                userId: user.authenticatedUser.id,
+                            })
+                            .then((res) => {
+                                console.log(res);
+                            });
+                    })
+                    navigate('/platform/tickets');
+                }
             } else {
                 alert("No se puede comprar un ticket que no está disponible")
             }

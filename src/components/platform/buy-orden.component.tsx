@@ -1,15 +1,22 @@
 import {
   ClockIcon,
-  CurrencyDollarIcon,
   HomeIcon,
   MapPinIcon,
   ShoppingBagIcon,
-  TicketIcon,
 } from "@heroicons/react/24/outline";
 import { useRef } from "react";
-import Input1Componet from "../../shared/components/inputs/input-1.component";
 import appService from "../../services/app.service";
-import { useNavigate } from "react-router-dom";
+export interface BuyOrdenComponentI {
+  start_point: string;
+  end_point: string;
+  arrive_time: string;
+  selected: any;
+  setSelected: any;
+  tripId: number;
+  setOpen: any;
+  init: any;
+  setOpenCart: any;
+}
 export default function BuyOrdenComponent({
   start_point,
   end_point,
@@ -20,32 +27,8 @@ export default function BuyOrdenComponent({
   setOpen,
   init,
   setOpenCart
-}: any) {
-  const name = useRef("");
+}: BuyOrdenComponentI) {
 
-  const lastName = useRef("");
-  function createTicket() {
-    console.log(lastName.current);
-    let user: any = localStorage.getItem("user");
-    if (user) {
-      user = JSON.parse(user);
-      appService
-        .createPassengerAndTicket({
-          tripId: tripId,
-          seatId: selected.id,
-          passengerName: name.current,
-          passengerLastName: lastName.current,
-          arrivedTime: "2023-01-25T21:53:33.299Z",
-          userId: user.authenticatedUser.id,
-        })
-        .then((res) => {
-          console.log(res);
-        });
-    } else {
-      return;
-    }
-
-  }
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">

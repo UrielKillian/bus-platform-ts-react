@@ -3,6 +3,20 @@ import { Dialog, Transition } from "@headlessui/react";
 import { MapIcon } from "@heroicons/react/24/outline";
 import Select1Component from "../../shared/components/selects/select-1.component";
 import appService from "../../services/app.service";
+import { DepartmentI } from "../../interfaces/models/department.interface";
+import { useEffect } from "react";
+export interface CreateModalTripComponentI {
+  departments: DepartmentI[];
+  selectedOut: any;
+  selectedIn: any;
+  setSelectedOut: any;
+  setSelectedIn: any;
+  open: boolean;
+  setOpen: any;
+  updateTable: any;
+  focusFirstSelect: any;
+}
+
 export default function CreteModalTripComponent({
   departments,
   selectedOut,
@@ -12,9 +26,16 @@ export default function CreteModalTripComponent({
   open,
   setOpen,
   updateTable,
-}:any) {
-  const cancelButtonRef:any = useRef(null);
-  const selectDate:any = useRef(null);
+  focusFirstSelect
+}: CreateModalTripComponentI) {
+  const cancelButtonRef: any = useRef(null);
+  const selectDate: any = useRef(null);
+  const focusSecondSelect: any = useRef<any>(null);
+  const focusInputDate: any = useRef<any>(null);
+
+  useEffect(() => {
+    focusFirstSelect.current?.click();
+  }, [focusFirstSelect]);
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -62,7 +83,7 @@ export default function CreteModalTripComponent({
                     >
                       Creando un nuevo viaje
                     </Dialog.Title>
-                    <div className="mt-2 space-y-3">
+                    <div className="mt-2 space-y-4">
                       <div className="text-left">
                         <Select1Component
                           title={"Seleccione punto de inicio:"}
@@ -70,6 +91,8 @@ export default function CreteModalTripComponent({
                           selected={selectedOut}
                           setSelected={setSelectedOut}
                           className="text-black"
+                          inputRef={focusFirstSelect}
+                          inputAnotherRef={focusSecondSelect}
                         />
                       </div>
                       <div className="text-left">
@@ -78,16 +101,19 @@ export default function CreteModalTripComponent({
                           items={departments}
                           selected={selectedIn}
                           setSelected={setSelectedIn}
+                          inputRef={focusSecondSelect}
+                          inputAnotherRef={focusInputDate}
                         />
                       </div>
                       <div className=" text-left">
                         <label>Seleccione fecha de salida:</label>
                         <input
+                          ref={focusInputDate}
                           className="p-2 rounded-md  block w-full border-gray-300"
                           type="datetime-local"
                           id="start"
                           onChange={(e) => {
-                            selectDate.current = e.target.value ;
+                            selectDate.current = e.target.value;
                           }}
                           name="trip-start"
                         ></input>

@@ -1,21 +1,28 @@
 import React from "react";
 import { ShoppingCartIcon, TicketIcon } from "@heroicons/react/24/outline";
-function countAvailableSeats(seats:any) {
-    var countAvailable = seats.filter(function (element:any) {
+import { TripI } from "../../../interfaces/models/trip.interface";
+function countAvailableSeats(seats: any) {
+    var countAvailable = seats.filter(function (element: any) {
         return element.isBooked === false;
     }).length;
     console.log(countAvailable);
     return countAvailable;
 }
-export default function TravelCardComponent({ trip, setSelected, setOpenTicketModal }:any) {
+
+export interface TravelCardComponentI {
+    trip: TripI;
+    setSelected: any;
+    setOpenTicketModal: any;
+}
+export default function TravelCardComponent({ trip, setSelected, setOpenTicketModal }: TravelCardComponentI) {
     return (
         <div key={trip.id} className="relative">
             <div className=" w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none h-28">
                 <img
                     src={
-                        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=874&q=80"
+                        "https://images.unsplash.com/photo-1547886596-61770d06925b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80"
                     }
-                    alt={trip.id}
+                    alt={"Viaje"}
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
             </div>
@@ -36,16 +43,16 @@ export default function TravelCardComponent({ trip, setSelected, setOpenTicketMo
                         <h3 className="text-md text-gray-700">
                             <div className="flex items-center">
                                 <label>{trip.originPoint.name} - {trip.destinationPoint.name}</label>
-                                
+
                             </div>
                         </h3>
                         <div className="mt-1">
                             <span className="inline-flex items-center rounded-full bg-green-200 px-2.5 py-0.5 text-xs font-medium text-green-800">
-                                    <TicketIcon className="h-4 w-4" />
-                                    {
-                                        countAvailableSeats(trip.seats)
-                                    }{" "}disponibles
-                                </span>
+                                <TicketIcon className="h-4 w-4" />
+                                {
+                                    countAvailableSeats(trip.seats)
+                                }{" "}disponibles
+                            </span>
                         </div>
                         <div className="mt-1 text-sm text-gray-500">
                             <span className="inline-flex items-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-800">

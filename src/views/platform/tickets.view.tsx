@@ -9,6 +9,8 @@ import TicketsTableComponents from "../../components/platform/tickets-table.comp
 import usersService from "../../services/users.service";
 import authService from "../../services/auth.service";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
+import FooterComponent from "../../shared/components/Footer/footer.component";
 const navigation = [
   { name: "Viajes", href: "/platform", current: false },
   { name: "Mis tickets", href: "#", current: true },
@@ -19,7 +21,7 @@ function classNames(...classes: any[]) {
 
 
 function PlatformTicketsIndex() {
-    let navigate: NavigateFunction = useNavigate();
+  let navigate: NavigateFunction = useNavigate();
   return (
     <>
       {/*
@@ -39,6 +41,13 @@ function PlatformTicketsIndex() {
                   <div className="border-b border-gray-700">
                     <div className="flex h-16 items-center justify-between px-4 sm:px-0">
                       <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                          <img
+                            className="h-8 w-12"
+                            src="https://www.redbus.pe/i/59538b35953097248522a65b4b79650e.png"
+                            alt="Redbus"
+                          />
+                        </div>
                         <div className="hidden md:block">
                           <div className="ml-10 flex items-baseline space-x-4">
                             {navigation.map((item) => (
@@ -47,7 +56,7 @@ function PlatformTicketsIndex() {
                                 href={item.href}
                                 className={classNames(
                                   item.current
-                                    ? "bg-gray-900 text-white"
+                                    ? "bg-pal3 text-white"
                                     : "text-gray-300 hover:bg-gray-700 hover:text-white",
                                   "px-3 py-2 rounded-md text-sm font-medium"
                                 )}
@@ -70,10 +79,10 @@ function PlatformTicketsIndex() {
                               navigate('/login');
                             }}
                             type="button"
-                            className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            className="rounded-full bg-pal3 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
                             <span className="sr-only">View notifications</span>
-                            <ArrowPathIcon
+                            <ArrowLeftOnRectangleIcon
                               className="h-6 w-6"
                               aria-hidden="true"
                             />
@@ -102,7 +111,7 @@ function PlatformTicketsIndex() {
                 </div>
 
                 <Disclosure.Panel className="border-b border-gray-700 md:hidden">
-                  <div className="space-y-1 px-2 py-3 sm:px-3">
+                  <div className="space-y-2 px-2 py-3 sm:px-3">
                     {navigation.map((item) => (
                       <Disclosure.Button
                         key={item.name}
@@ -110,7 +119,7 @@ function PlatformTicketsIndex() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
+                            ? "bg-pal3 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "block px-3 py-2 rounded-md text-base font-medium"
                         )}
@@ -119,21 +128,24 @@ function PlatformTicketsIndex() {
                         {item.name}
                       </Disclosure.Button>
                     ))}
+                    <button
+                      type="button"
+                      onClick={
+                        () => {
+                          authService.logout();
+                          navigate('/login');
+                        }
+                      }
+                      className="inline-flex w-full justify-center items-center rounded-md border border-transparent bg-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                    >
+                      <ArrowLeftOnRectangleIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                      Cerrar sesión
+                    </button>
+
                   </div>
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
-                      <div className="flex-shrink-0">
-                        <button
-                          type="button"
-                          className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="sr-only">View notifications</span>
-                          <ArrowPathIcon
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
+
                       <div className="ml-3">
                         <div className="text-base font-medium leading-none text-white">
                           {usersService.getActualEmail()}
@@ -166,6 +178,7 @@ function PlatformTicketsIndex() {
             {/* /End replace */}
           </div>
         </main>
+        <FooterComponent />
       </div>
     </>
   );

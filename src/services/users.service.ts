@@ -9,6 +9,10 @@ class UsersService {
     return http.post("/users/create", data);
   }
 
+  getUserByEmail(email: string) {
+    return http.get(`/users/email/${email}`);
+  }
+
   // Local Storage
   getActualEmail() {
     let user: any = localStorage.getItem("user");

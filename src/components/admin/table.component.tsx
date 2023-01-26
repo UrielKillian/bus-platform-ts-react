@@ -3,15 +3,17 @@ import {
   PencilIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import departmentsService from "../../services/departments.service";
 import tripService from "../../services/trip.service";
 import Select1Component from "../../shared/components/selects/select-1.component";
 import CreateModalTripComponent from "./create-modal-trip.component";
 import ViewPassengersComponent from "./view-passenger.component";
 
+
 export default function AdminTableComponent() {
   // States
+  const focusFirstSelect: any = useRef<any>(null);
   const [departments, setDepartments] = useState([]);
   const [trips, setTrips] = useState([]);
   const [selectedFilterOut, setSelecteFilterOut] = useState({
@@ -41,17 +43,19 @@ export default function AdminTableComponent() {
       },
     },
   ]);
-  function initView() {
-    tripService.getAllTrips().then((response) => {
+  async function initView() {
+    await tripService.getAllTrips().then((response) => {
       console.log(response.data);
       setTrips(response.data);
     });
   }
-  function countAvailableSeats(seats:any) {
-    var countAvailable = seats.filter(function (element:any) {
+  function countAvailableSeats(seats: any) {
+    var countAvailable = seats.filter(function (element: any) {
       return element.isBooked === false;
     }).length;
-    console.log(countAvailable);
+    if (countAvailable === 0) {
+      return 15
+    }
     return countAvailable;
   }
   useEffect(() => {
@@ -163,7 +167,7 @@ export default function AdminTableComponent() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {trips.map((trip:any, tripIdx) => (
+                  {trips.map((trip: any, tripIdx) => (
                     <tr
                       key={trip.id}
                       className={tripIdx % 2 === 0 ? undefined : "bg-gray-50"}
@@ -229,6 +233,7 @@ export default function AdminTableComponent() {
         open={openCreateModal}
         setOpen={setOpenCreateModal}
         updateTable={initView}
+        focusFirstSelect={focusFirstSelect}
       />
       <ViewPassengersComponent
         open={openViewPassengersModal}

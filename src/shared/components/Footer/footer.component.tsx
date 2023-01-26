@@ -5,14 +5,12 @@ const navigation = {
         { name: 'Inicio', href: '/' },
         { name: 'Viajes', href: '/platform' },
         { name: 'Tickets', href: '/platform/tickets' },
-        { name: 'Preguntas frecuentes', href: '/preguntas-frecuentes' },
-        { name: 'Contact', href: '/ayuda' },
     ],
     social: [
         {
             name: 'Facebook',
             href: 'https://www.facebook.com/urielkillian2607',
-            icon: (props:any) => (
+            icon: (props: any) => (
                 <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
                     <path
                         fillRule="evenodd"
@@ -25,7 +23,7 @@ const navigation = {
         {
             name: 'Instagram',
             href: 'https://www.instagram.com/a_different_programmer/',
-            icon: (props:any) => (
+            icon: (props: any) => (
                 <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
                     <path
                         fillRule="evenodd"
@@ -47,7 +45,7 @@ const navigation = {
         {
             name: 'GitHub',
             href: 'https://github.com/UrielKillian',
-            icon: (props:any) => (
+            icon: (props: any) => (
                 <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
                     <path
                         fillRule="evenodd"

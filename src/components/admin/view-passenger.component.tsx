@@ -1,10 +1,26 @@
 import { Fragment, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { SpanTextStyled } from "../../styled-components/spans/span-text.styled";
+import { LockClosedIcon, LockOpenIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { PassengerI } from "../../interfaces/models/passenger.interface";
+export interface ViewPassengersComponentI {
+  open: boolean;
+  setOpen: any;
+  passengers: any;
+}
+export default function ViewPassengersComponent({ open, setOpen, passengers }: ViewPassengersComponentI) {
+  const [sortPassenger, setSortPassenger] = useState(passengers);
 
-export default function ViewPassengersComponent({ open, setOpen, passengers }:any) {
+  const sortedDescendingCountries = passengers.sort(function (a: any, b: any) {
+    return a.seatNumber - b.seatNumber;
+  })
+
   useEffect(() => {
     console.log(passengers);
-  });
+    setSortPassenger(sortedDescendingCountries);
+  }, [sortPassenger, passengers, sortedDescendingCountries]);
+  // order by numberSeat
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -77,13 +93,13 @@ export default function ViewPassengersComponent({ open, setOpen, passengers }:an
                               </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200 bg-white">
-                              {passengers.map((item:any) => (
+                              {sortPassenger.map((item: any) => (
                                 <tr
                                   key={item.id}
                                   className="divide-x divide-gray-200"
                                 >
                                   <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-6">
-                                    {item.id}
+                                    {item.seatNumber}
                                   </td>
                                   <td className="whitespace-nowrap p-4 text-sm text-gray-500">
                                     {item.passenger
@@ -95,8 +111,10 @@ export default function ViewPassengersComponent({ open, setOpen, passengers }:an
                                       ? item.passenger.lastName
                                       : "No hay pasajero"}
                                   </td>
-                                  <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-6">
-                                    {item.isBooked ? "Si" : "No"}
+                                  <td className="whitespace-nowrap py-4 flex justify-center w-full pl-4 pr-4 text-sm text-gray-500 sm:pr-6">
+                                    <SpanTextStyled color={item.isBooked ? "#E73815" : "#59DE12"}>
+                                      {item.isBooked ? <LockClosedIcon className="h-4 w-4" /> : <LockOpenIcon className="h-4 w-4" />}</SpanTextStyled>
+
                                   </td>
                                 </tr>
                               ))}

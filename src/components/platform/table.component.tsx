@@ -5,8 +5,15 @@ import departmentsService from "../../services/departments.service";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import BuyTicketComponent from "./buy-ticket.component";
 import TravelCardComponent from "../../shared/components/cards/travel-card.component";
+import PaginationComponent from "../../shared/components/paginations/pagination.component";
+import { useRef } from "react";
 
-export default function TablePlatformComponent({ setOpenCart }: any) {
+export interface TablePlatformComponentI {
+  setOpenCart: any
+}
+export default function TablePlatformComponent({ setOpenCart }: TablePlatformComponentI) {
+  const startDepartment = useRef<any>(null);
+  const endDepartment = useRef<any>(null);
   const [departments, setDepartments] = useState([]);
   const [trips, setTrips] = useState([]);
   const [selectedFilterOut, setSelecteFilterOut] = useState({
@@ -15,6 +22,7 @@ export default function TablePlatformComponent({ setOpenCart }: any) {
   const [selectedFilterIn, setSelectedFilterIn] = useState({
     name: "Elija un departamento",
   });
+
   const [openTicketModal, setOpenTicketModal] = useState(false);
   const [selectTrip, setSelectTrip] = useState({
     id: 0,
@@ -38,12 +46,18 @@ export default function TablePlatformComponent({ setOpenCart }: any) {
   }
 
   useEffect(() => {
+    if (startDepartment.current) {
+      startDepartment.current?.click();
+    }
+  }, [startDepartment]);
+
+  useEffect(() => {
     departmentsService.getAllDepartments().then((response) => {
       console.log(response.data);
       setDepartments(response.data);
     });
     init();
-  }, []);
+  }, [startDepartment]);
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -65,6 +79,8 @@ export default function TablePlatformComponent({ setOpenCart }: any) {
               selected={selectedFilterOut}
               setSelected={setSelecteFilterOut}
               className={"block text-sm font-medium text-white"}
+              inputRef={startDepartment}
+              inputAnotherRef={endDepartment}
             />
             <Select1Component
               title={"Punto de llegada"}
@@ -72,6 +88,7 @@ export default function TablePlatformComponent({ setOpenCart }: any) {
               selected={selectedFilterIn}
               setSelected={setSelectedFilterIn}
               className={"block text-sm font-medium text-white"}
+              inputRef={endDepartment}
             />
           </div>
           <div className="justify-end flex mt-3 ml-3 space-x-2">
@@ -116,6 +133,9 @@ export default function TablePlatformComponent({ setOpenCart }: any) {
 
                       />
                     ))}
+                  </div>
+                  <div className="pt-4">
+                    <PaginationComponent />
                   </div>
                 </div>
               </div>

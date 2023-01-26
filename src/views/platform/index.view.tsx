@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import {
   ArrowPathIcon,
+  ArrowRightOnRectangleIcon,
   Bars3Icon,
   ShoppingCartIcon,
   XMarkIcon,
@@ -10,7 +11,10 @@ import { useState } from "react";
 import FooterComponent from "../../shared/components/Footer/footer.component";
 import BuyCartComponent from "../../components/platform/buy-cart.component";
 import authService from "../../services/auth.service";
-
+import usersService from "../../services/users.service";
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/20/solid";
+import XNotificationComponent from "../../shared/components/notifications/x-notification.component";
 const navigation = [
   { name: "Viajes", href: "/platform", current: true },
   { name: "Mis tickets", href: "/platform/tickets", current: false },
@@ -19,11 +23,13 @@ function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function PlatformIndex() {
+  const [xNotificationMessage, setXNotificationMessage] = useState(false);
+  let navigate: NavigateFunction = useNavigate();
   const [openCart, setOpenCart] = useState(false);
   return (
     <>
       <div className="min-h-full">
-        <div className="bg-[url('https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')] bg-cover bg-center pb-32">
+        <div className="bg-[url('https://images.unsplash.com/photo-1501393091915-82f0cbd8f338?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80')] bg-cover bg-center pb-32">
           <Disclosure as="nav" className="bg-pal1">
             {({ open }) => (
               <>
@@ -46,7 +52,7 @@ function PlatformIndex() {
                                 href={item.href}
                                 className={classNames(
                                   item.current
-                                    ? "bg-gray-900 text-white"
+                                    ? "bg-pal3 text-white"
                                     : "text-white hover:bg-gray-700 hover:text-white",
                                   "px-3 py-2 rounded-md text-sm font-medium"
                                 )}
@@ -61,14 +67,28 @@ function PlatformIndex() {
                       <div className="hidden md:block">
                         <div className="ml-4 flex items-center md:ml-6">
                           <div className="text-white mr-3">
-                            <label>DNI: 75181614</label>
+                            <label>{usersService.getActualEmail()}</label>
                           </div>
+                          <button
+                            onClick={() => {
+                              authService.logout();
+                              navigate('/login');
+                            }}
+                            type="button"
+                            className="rounded-md bg-pal3 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="sr-only">Logout</span>
+                            <ArrowLeftOnRectangleIcon
+                              className="h-6 w-6"
+                              aria-hidden="true"
+                            />
+                          </button>
                           <button
                             onClick={() => {
                               setOpenCart(true);
                             }}
                             type="button"
-                            className="rounded-md bg-pal1 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            className="rounded-md ml-3 bg-pal4 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                           >
                             <span className="sr-only">View notifications</span>
                             <ShoppingCartIcon
@@ -80,6 +100,7 @@ function PlatformIndex() {
                       </div>
                       <div className="-mr-2 flex md:hidden">
                         {/* Mobile menu button */}
+
                         <button
                           onClick={() => {
                             setOpenCart(true);
@@ -122,7 +143,7 @@ function PlatformIndex() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
+                            ? "bg-pal3 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "block px-3 py-2 rounded-md text-base font-medium"
                         )}
@@ -131,19 +152,32 @@ function PlatformIndex() {
                         {item.name}
                       </Disclosure.Button>
                     ))}
+                    <button
+                      type="button"
+                      onClick={
+                        () => {
+                          authService.logout();
+                          navigate('/login');
+                        }
+                      }
+                      className="inline-flex w-full justify-center items-center rounded-md border border-transparent bg-orange-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                    >
+                      <ArrowRightOnRectangleIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                      Cerrar sesión
+                    </button>
                   </div>
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
                         <button
                           onClick={() => {
-                            authService.logout();
+                            setOpenCart(true)
                           }}
                           type="button"
-                          className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          className="rounded-full bg-pal3 p-1 text-white hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                         >
-                          <span className="sr-only">View notifications</span>
-                          <ArrowPathIcon
+                          <span className="sr-only">Logout</span>
+                          <ShoppingCartIcon
                             className="h-6 w-6"
                             aria-hidden="true"
                           />
@@ -151,10 +185,10 @@ function PlatformIndex() {
                       </div>
                       <div className="ml-3">
                         <div className="text-base font-medium leading-none text-white">
-                          75181614
+                          {usersService.getActualEmail()}
                         </div>
                         <div className="text-sm font-medium leading-none text-gray-400">
-                          DNI Actual
+                          Correo:
                         </div>
                       </div>
                     </div>
@@ -174,17 +208,17 @@ function PlatformIndex() {
 
         <main className="-mt-32">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            {/* Replace with your content */}
+
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <TablePlatformComponent setOpenCart={setOpenCart} />
             </div>
-            {/* /End replace */}
           </div>
         </main>
         <div>
           <FooterComponent />
         </div>
-        <BuyCartComponent open={openCart} setOpen={setOpenCart} />
+        <BuyCartComponent open={openCart} setOpen={setOpenCart} setXNotificationMessage={setXNotificationMessage} />
+        <XNotificationComponent title={"0 Productos"} message={"Agregue tickets al carrito"} show={xNotificationMessage} setShow={setXNotificationMessage} />
       </div>
     </>
   );

@@ -1,6 +1,13 @@
 
-
-export default function Input1Component({ title, example, type, name, value, disabled }: any) {
+export interface Input1ComponentI {
+  title: string;
+  example: string;
+  type: string;
+  name: string;
+  value: any;
+  disabled: boolean;
+}
+export default function Input1Component({ title, example, type, name, value, disabled }: Input1ComponentI) {
   return (
     <div>
       <label htmlFor="email" className="block text-sm font-medium text-white">

@@ -1,15 +1,16 @@
-import Input1Component from "../../shared/components/inputs/input-1.component";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { LockClosedIcon, LockOpenIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from 'react-redux';
 import { removeItem, updateNameAndLastName, canBuyToTrue, canBuyToFalse } from "../../redux/slice/cartSlice";
 import * as Yup from "yup";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import ErrorMessage1Component from "../../shared/components/messages/ErrorMessages/error-message.component";
 import AlertMessage1Component from "../../shared/components/messages/AlertMessages/alert-message-1.component";
-export default function ItemCartComponent({ item }: any) {
-    const name = useRef("");
-    const lastName = useRef("");
+import { ItemI } from "../../interfaces/models/item.interface";
+
+export interface ItemCartComponentI {
+    item: ItemI;
+}
+export default function ItemCartComponent({ item }: ItemCartComponentI) {
     const [save, setSave] = useState(false);
     const dispatch = useDispatch()
     const validationSchema = Yup.object({
@@ -26,13 +27,7 @@ export default function ItemCartComponent({ item }: any) {
     const renderError = (message: any) => <div>{message}</div>;
 
     return (
-        <div className="border border-gray-600 rounded-md">
-            <button onClick={() => {
-                console.log(item)
-            }
-            }>
-                Ver el item
-            </button>
+        <div className="border border-gray-300 rounded-md">
             <div className="grid grid-cols-4 h-[22rem]">
                 <div className="col-span-1">
                     <div className="h-full bg-[url('https://images.unsplash.com/photo-1567748534085-467f8a8a475d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80')] bg-cover bg-center" />
@@ -40,8 +35,9 @@ export default function ItemCartComponent({ item }: any) {
                 <div className="col-span-3">
                     <div className="p-2">
                         <div className="items-center flex justify-between">
-                            <label>{item.start_point} - {item.end_point}</label>
+                            <label className=" font-sans text-pal3 font-bold">{item.start_point} - {item.end_point}</label>
                             <button
+                                className="border border-red-400 rounded-md"
                                 onClick={() => {
                                     dispatch(removeItem({
                                         id: item.id,

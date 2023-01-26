@@ -9,14 +9,21 @@ import { useSelector } from "react-redux";
 import CheckNotificationComponent from "../../shared/components/notifications/check-notification.component";
 import XNotificationComponent from "../../shared/components/notifications/x-notification.component";
 
+export interface BuyTicketComponentI {
+  open: boolean;
+  setOpen: any;
+  selectedTrip: any;
+  init: any;
+  setOpenCart: any;
+}
 export default function BuyTicketComponent({
   open,
   setOpen,
   selectedTrip,
   init,
   setOpenCart
-}: any) {
-  const [selected, setSelected] = useState<any>(null);
+}: BuyTicketComponentI) {
+  const [selected, setSelected] = useState<SeatI | null>(null);
   const [showCheckNotification, setShowCheckNotification] = useState(false);
   const [showXNotification, setShowXNotification] = useState(false);
   const dispatch = useDispatch()

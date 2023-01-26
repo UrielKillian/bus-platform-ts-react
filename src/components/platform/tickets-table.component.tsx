@@ -34,7 +34,7 @@ export default function TicketsTableComponents() {
   });
   useEffect(() => {
     let user: any = localStorage.getItem("user");
-     user = JSON.parse(user);
+    user = JSON.parse(user);
     setTimeout(() => {
       ticketService.getTicketByUser(user.authenticatedUser.id).then((response) => {
         console.log(response.data);
@@ -112,7 +112,7 @@ export default function TicketsTableComponents() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {tickets.map((ticket:any) => (
+                  {tickets.map((ticket: any) => (
                     <tr key={ticket.id} className="divide-x divide-gray-200">
                       <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-6">
                         {ticket.id}
@@ -124,24 +124,24 @@ export default function TicketsTableComponents() {
                         {ticket.trip.destinationPoint.name}
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                                <strong>{new Date(ticket.arrivalDate).toLocaleDateString(
-                            "en-gb"
+                        <strong>{new Date(ticket.arrivalDate).toLocaleDateString(
+                          "en-gb"
                         )} - {Intl.DateTimeFormat("en", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            hour12: true,
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
                         }).format(new Date(ticket.arrivalDate))}</strong>
-                 
+
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                                 <strong>{new Date(ticket.trip.departureTime).toLocaleDateString(
-                            "en-gb"
+                        <strong>{new Date(ticket.trip.departureTime).toLocaleDateString(
+                          "en-gb"
                         )} - {Intl.DateTimeFormat("en", {
-                            hour: "numeric",
-                            minute: "numeric",
-                            hour12: true,
+                          hour: "numeric",
+                          minute: "numeric",
+                          hour12: true,
                         }).format(new Date(ticket.trip.departureTime))}</strong>
-                 
+
                       </td>
                       <td className="whitespace-nowrap p-4 text-sm text-gray-500">
                         {ticket.passenger.name} {ticket.passenger.lastName}

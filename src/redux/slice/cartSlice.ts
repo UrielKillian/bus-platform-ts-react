@@ -23,21 +23,6 @@ const cartSlice = createSlice({
         state.cart.push({ ...action.payload, quantity: 1 });
       }
     },
-    incrementQuantity: (state, action) => {
-      const item = state.cart.find((item: ItemI) => item.id === action.payload);
-      if (item !== undefined) {
-        item.quantity++;
-      }
-    },
-    decrementQuantity: (state, action) => {
-      const item = state.cart.find((item: ItemI) => item.id === action.payload);
-      if (item === undefined) return;
-      if (item.quantity === 1) {
-        item.quantity = 1;
-      } else {
-        item.quantity--;
-      }
-    },
     updateNameAndLastName: (state, action) => {
       const index = state.cart.findIndex(
         (item) => item.id === action.payload.id
@@ -70,7 +55,5 @@ export const {
   updateNameAndLastName,
   canBuyToTrue,
   canBuyToFalse,
-  incrementQuantity,
-  decrementQuantity,
   removeItem,
 } = cartSlice.actions;

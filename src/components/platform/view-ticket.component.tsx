@@ -1,7 +1,12 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function ViewTicketComponent({ open, setOpen, ticket }:any) {
+export interface ViewTicketComponentI {
+  open: boolean;
+  setOpen: any;
+  ticket?: any;
+}
+export default function ViewTicketComponent({ open, setOpen, ticket }: ViewTicketComponentI) {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -55,7 +60,7 @@ export default function ViewTicketComponent({ open, setOpen, ticket }:any) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 bg-purple-400 px-6  py-4">
+                    <div className="grid grid-cols-3 bg-sky-700 px-6  py-4">
                       <div className="w-2/5">
                         <span className="uppercase text-purple-lighter block tracking-wide mb-1 font-thin text-xs">
                           Fecha

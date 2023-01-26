@@ -9,15 +9,24 @@ import PlatformTicketsIndex from './views/platform/tickets.view';
 import AdminIndex from './views/admin/index.view';
 import RegisterViewindex from './views/auth/register.view';
 import { Navigate, useLocation } from "react-router-dom";
+import QuestionsView from './views/questions.view';
 
 const ProtectedRoute = ({ children }: any) => {
   const isLoged = localStorage.getItem('user');
   let location = useLocation();
 
   if (!isLoged) {
-      return <Navigate to="/login" state={{ from: location }} replace />
+    return <Navigate to="/login" state={{ from: location }} replace />
   }
+  return children
+}
 
+const AlreadyLogedRoute = ({ children }: any) => {
+  const isLoged = localStorage.getItem('user');
+  let location = useLocation();
+  if (isLoged) {
+    return <Navigate to="/platform" state={{ from: location }} replace />
+  }
   return children
 }
 
@@ -27,17 +36,18 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<IndexView/>} />
-          <Route path="/login" element={<LoginView />} />
+          <Route path="/" element={<IndexView />} />
+          <Route path="/login" element={<AlreadyLogedRoute><LoginView /></AlreadyLogedRoute>} />
+          <Route path="/questions" element={<QuestionsView />} />
           {/* Platform Routes */}
-          <Route path="/platform" element={<ProtectedRoute><PlatformIndex/></ProtectedRoute>} />
+          <Route path="/platform" element={<ProtectedRoute><PlatformIndex /></ProtectedRoute>} />
           <Route path="/platform/tickets" element={<ProtectedRoute><PlatformTicketsIndex /></ProtectedRoute>} />
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute><AdminIndex /></ProtectedRoute>} />
           {/* Auth Routes */}
-          <Route path="/register" element={<RegisterViewindex />}/> 
-          
-      </Routes>
+          <Route path="/register" element={<AlreadyLogedRoute><RegisterViewindex /></AlreadyLogedRoute>} />
+
+        </Routes>
       </BrowserRouter>
     </div>
   );
