@@ -6,7 +6,7 @@ import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import BuyTicketComponent from "./buy-ticket.component";
 import TravelCardComponent from "../../shared/components/cards/travel-card.component";
 
-export default function TablePlatformComponent() {
+export default function TablePlatformComponent({ setOpenCart }: any) {
   const [departments, setDepartments] = useState([]);
   const [trips, setTrips] = useState([]);
   const [selectedFilterOut, setSelecteFilterOut] = useState({
@@ -113,6 +113,7 @@ export default function TablePlatformComponent() {
                         trip={trip}
                         setSelected={setSelectTrip}
                         setOpenTicketModal={setOpenTicketModal}
+
                       />
                     ))}
                   </div>
@@ -127,6 +128,7 @@ export default function TablePlatformComponent() {
         setOpen={setOpenTicketModal}
         selectedTrip={selectTrip}
         init={init}
+        setOpenCart={setOpenCart}
       />
     </div>
   );

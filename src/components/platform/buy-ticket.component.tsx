@@ -1,26 +1,34 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { LockClosedIcon, TicketIcon } from "@heroicons/react/24/outline";
+import { ArrowRightCircleIcon, ArrowRightOnRectangleIcon, LockClosedIcon, TicketIcon } from "@heroicons/react/24/outline";
 import BuyOrdenComponent from "./buy-orden.component";
 import { SeatI } from "../../interfaces/models/seat.interface";
 import { useDispatch } from 'react-redux';
 import { addToCart, removeItem } from "../../redux/slice/cartSlice";
 import { useSelector } from "react-redux";
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(" ");
-}
+import CheckNotificationComponent from "../../shared/components/notifications/check-notification.component";
+import XNotificationComponent from "../../shared/components/notifications/x-notification.component";
+
 export default function BuyTicketComponent({
   open,
   setOpen,
   selectedTrip,
   init,
+  setOpenCart
 }: any) {
   const [selected, setSelected] = useState<any>(null);
+  const [showCheckNotification, setShowCheckNotification] = useState(false);
+  const [showXNotification, setShowXNotification] = useState(false);
   const dispatch = useDispatch()
   const cart = useSelector((state: any) => state.cart);
+  function closeAll() {
+    setOpen(false);
+    setShowCheckNotification(false);
+    setShowXNotification(false);
+  }
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog as="div" className="relative z-10" onClose={closeAll}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -46,18 +54,23 @@ export default function BuyTicketComponent({
             >
               <Dialog.Panel className="relative transform overflow-hidden bg-pal1 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-70 border border-gray-700 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8  sm:w-[40rem] sm:p-6">
                 <div className="p-5 border border-transparent  rounded-md">
-                  <div className="grid md:grid-cols-4 grid-cols-1 ">
+                  <div className="grid md:grid-cols-1 grid-cols-1 ">
                     <div className="border p-2 border-gray-900 md:col-span-1 bg-pal1 items-center text-center rounded-md">
-                      <div className="border border-pal3 rounded-md text-white bg-pal3">
-                        Conductor
+
+                      <div className="border border-pal3 inline-flex p-1 rounded-md text-white bg-pal3">
+                        El conductor se encuentra a la derecha del crokis <ArrowRightCircleIcon className="h-6 w-6 ml-2 text-white" />
                       </div>
-                      <div className="grid grid-cols-2 mb-10">
+                      <div className="grid md:grid-cols-8 grid-cols-2  ">
                         {selectedTrip.seats.map((seat: SeatI) => (
                           <div key={seat.id}>
                             {!seat.isBooked ? (
                               cart.find((item: any) => item.id === seat.id) ?
                                 <button
                                   onClick={() => {
+                                    setShowXNotification(true)
+                                    if (showCheckNotification) {
+                                      setShowCheckNotification(false)
+                                    }
                                     dispatch(removeItem({
                                       id: seat.id,
                                     }))
@@ -67,13 +80,20 @@ export default function BuyTicketComponent({
                                   <TicketIcon className="h-6 w-6 text-white" />
                                 </button> : <button
                                   onClick={() => {
+                                    setShowCheckNotification(true)
+                                    if (showXNotification) {
+                                      setShowXNotification(false)
+                                    }
                                     dispatch(addToCart({
                                       id: seat.id,
                                       seat,
                                       start_point: selectedTrip.originPoint.name,
                                       end_point: selectedTrip.destinationPoint.name,
                                       arrive_time: selectedTrip.departureTime,
-                                      tripId: selectedTrip.id
+                                      tripId: selectedTrip.id,
+                                      canBuy: false,
+                                      name: "",
+                                      lastName: "",
                                     }))
                                   }}
                                   className="px-2 py-1.5 border mt-5 border-indigo-500 bg-pal2 rounded-md"
@@ -89,6 +109,7 @@ export default function BuyTicketComponent({
                             )}
                           </div>
                         ))}
+
                       </div>
                     </div>
                     <div className=" md:col-span-3">
@@ -101,6 +122,7 @@ export default function BuyTicketComponent({
                         tripId={selectedTrip.id}
                         setOpen={setOpen}
                         init={init}
+                        setOpenCart={setOpenCart}
                       />
                     </div>
                   </div>
@@ -108,6 +130,8 @@ export default function BuyTicketComponent({
               </Dialog.Panel>
             </Transition.Child>
           </div>
+          <CheckNotificationComponent title={"Ticket agregado"} message={"El ticket fue agregado correctamente"} show={showCheckNotification} setShow={setShowCheckNotification} />
+          <XNotificationComponent title={"Ticket retirado"} message={"El ticket fue retirado correctamente"} show={showXNotification} setShow={setShowXNotification} />
         </div>
       </Dialog>
     </Transition.Root>

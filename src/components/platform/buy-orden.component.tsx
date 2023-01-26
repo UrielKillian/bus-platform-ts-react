@@ -3,6 +3,7 @@ import {
   CurrencyDollarIcon,
   HomeIcon,
   MapPinIcon,
+  ShoppingBagIcon,
   TicketIcon,
 } from "@heroicons/react/24/outline";
 import { useRef } from "react";
@@ -18,32 +19,32 @@ export default function BuyOrdenComponent({
   tripId,
   setOpen,
   init,
-}:any) {
+  setOpenCart
+}: any) {
   const name = useRef("");
-  const lastName = useRef("");
-  const navigate = useNavigate();
 
+  const lastName = useRef("");
   function createTicket() {
     console.log(lastName.current);
-    let user:any = localStorage.getItem("user");
+    let user: any = localStorage.getItem("user");
     if (user) {
       user = JSON.parse(user);
       appService
-      .createPassengerAndTicket({
-        tripId: tripId,
-        seatId: selected.id,
-        passengerName: name.current,
-        passengerLastName: lastName.current,
-        arrivedTime: "2023-01-25T21:53:33.299Z",
-        userId: user.authenticatedUser.id,
-      })
-      .then((res) => {
-        console.log(res);
-      });
+        .createPassengerAndTicket({
+          tripId: tripId,
+          seatId: selected.id,
+          passengerName: name.current,
+          passengerLastName: lastName.current,
+          arrivedTime: "2023-01-25T21:53:33.299Z",
+          userId: user.authenticatedUser.id,
+        })
+        .then((res) => {
+          console.log(res);
+        });
     } else {
       return;
     }
-    
+
   }
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -74,62 +75,19 @@ export default function BuyOrdenComponent({
             }).format(new Date(arrive_time))}
           </span>
         </div>
-        {selected ? (
-          <div>
-            <div className="mt-5 border border-pal1 rounded-md p-5 space-y-2 bg-pal1 text-white">
-              <label>Detalle del boleto: </label>
-              <span className="flex items-center">
-                <TicketIcon className="w-6 h-6 p-0.5 mr-1 rounded-md bg-yellow-700 text-white" />{" "}
-                Asiento: {selected.seatNumber}
-              </span>
-              <span className="flex items-center">
-                <CurrencyDollarIcon className="w-6 h-6 p-0.5 mr-1 rounded-md bg-red-700 text-white" />{" "}
-                Precio: S/.Free
-              </span>
-              <div className="text-black">
-                <Input1Componet
-                  title={"Ingrese nombre"}
-                  example={"Edinson"}
-                  type={"text"}
-                  value={name}
-                  name="Name-ticket"
-                />
-              </div>
-              <div className="text-black">
-                <Input1Componet
-                  title={"Ingrese apellido"}
-                  example={"Cabrera"}
-                  type={"text"}
-                  value={lastName}
-                  name="LastName-ticket"
-                />
-              </div>
-            </div>
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={() => {
-                  createTicket();
-                  setSelected(null);
-                  init();
-                  setOpen(false);
-                  navigate("/platform/tickets");
-                }}
-                type="button"
-                className="inline-flex items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-              >
-                <CurrencyDollarIcon
-                  className="-ml-1 mr-2 h-5 w-5"
-                  aria-hidden="true"
-                />
-                Comprar
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className=" mt-5 border border-pal1 rounded-md p-5 space-y-2 bg-pal1 text-white">
-            Por favor seleccione un ticket
-          </div>
-        )}
+        <div className=" mt-5 border border-pal1 rounded-md p-5 space-y-2 bg-pal1 text-white">
+          <button
+            onClick={() => {
+              setOpen(false);
+              setOpenCart(true);
+            }}
+            type="button"
+            className="inline-flex w-full justify-center items-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            <ShoppingBagIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+            Ir al carrito
+          </button>
+        </div>
       </div>
     </div>
   );

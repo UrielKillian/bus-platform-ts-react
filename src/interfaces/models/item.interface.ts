@@ -7,4 +7,7 @@ export interface ItemI {
   category: string;
   image: string;
   quantity: number;
+  name: string;
+  lastName: string;
+  canBuy: boolean;
 }

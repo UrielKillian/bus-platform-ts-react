@@ -38,6 +38,25 @@ const cartSlice = createSlice({
         item.quantity--;
       }
     },
+    updateNameAndLastName: (state, action) => {
+      const index = state.cart.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.cart[index].name = action.payload.name;
+      state.cart[index].lastName = action.payload.lastName;
+    },
+    canBuyToTrue: (state, action) => {
+      const index = state.cart.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.cart[index].canBuy = true;
+    },
+    canBuyToFalse: (state, action) => {
+      const index = state.cart.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      state.cart[index].canBuy = false;
+    },
     removeItem: (state, action) => {
       const index = state.cart.findIndex((item) => item.id === action.payload);
       state.cart.splice(index);
@@ -46,5 +65,12 @@ const cartSlice = createSlice({
 });
 
 export const cartReducer = cartSlice.reducer;
-export const { addToCart, incrementQuantity, decrementQuantity, removeItem } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  updateNameAndLastName,
+  canBuyToTrue,
+  canBuyToFalse,
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+} = cartSlice.actions;

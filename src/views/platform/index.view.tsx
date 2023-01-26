@@ -15,7 +15,7 @@ const navigation = [
   { name: "Viajes", href: "/platform", current: true },
   { name: "Mis tickets", href: "/platform/tickets", current: false },
 ];
-function classNames(...classes :any[]) {
+function classNames(...classes: any[]) {
   return classes.filter(Boolean).join(" ");
 }
 function PlatformIndex() {
@@ -81,21 +81,21 @@ function PlatformIndex() {
                       <div className="-mr-2 flex md:hidden">
                         {/* Mobile menu button */}
                         <button
-                            onClick={() => {
-                              setOpenCart(true);
-                            }}
-                            type="button"
-                            className="e-flex items-center mr-3 justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                          >
-                            <span className="sr-only">View notifications</span>
-                            <ShoppingCartIcon
-                              className="h-6 w-6"
-                              aria-hidden="true"
-                            />
-                          </button>
+                          onClick={() => {
+                            setOpenCart(true);
+                          }}
+                          type="button"
+                          className="e-flex items-center mr-3 justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <ShoppingCartIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                        </button>
                         <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">Open main menu</span>
-                          
+
                           {open ? (
                             <XMarkIcon
                               className="block h-6 w-6"
@@ -176,7 +176,7 @@ function PlatformIndex() {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <TablePlatformComponent />
+              <TablePlatformComponent setOpenCart={setOpenCart} />
             </div>
             {/* /End replace */}
           </div>

@@ -4,8 +4,55 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CurrencyDollarIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import ItemCartComponent from "./item-cart.component";
+import appService from "../../services/app.service";
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 export default function BuyCartComponent({ open, setOpen }: any) {
+    let navigate: NavigateFunction = useNavigate();
     const cart = useSelector((state: any) => state.cart);
+    function createTicket() {
+        let user: any = localStorage.getItem("user");
+        if (user) {
+            user = JSON.parse(user);
+            const canIBuy = cart.find((item: any) => item.canBuy === false)
+            if (!canIBuy) {
+                cart.map((item: any) => {
+                    appService
+                        .createPassengerAndTicket({
+                            tripId: item.tripId,
+                            seatId: item.id,
+                            passengerName: item.name,
+                            passengerLastName: item.lastName,
+                            arrivedTime: "2024-01-25T21:53:33.299Z",
+                            userId: user.authenticatedUser.id,
+                        })
+                        .then((res) => {
+                            console.log(res);
+                        });
+
+                })
+                navigate('/platform/tickets');
+            } else {
+                alert("No se puede comprar un ticket que no está disponible")
+            }
+            ;
+
+            /* appService
+                .createPassengerAndTicket({
+                    tripId: tripId,
+                    seatId: selected.id,
+                    passengerName: name.current,
+                    passengerLastName: lastName.current,
+                    arrivedTime: "2023-01-25T21:53:33.299Z",
+                    userId: user.authenticatedUser.id,
+                })
+                .then((res) => {
+                    console.log(res);
+                }); */
+        } else {
+            return;
+        }
+
+    }
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -60,8 +107,11 @@ export default function BuyCartComponent({ open, setOpen }: any) {
                                                 </div>
                                                 <div className="mt-4">
                                                     <button
+                                                        onClick={() => {
+                                                            createTicket();
+                                                        }}
                                                         type="button"
-                                                        className=" justify-center inline-flex w-full items-center rounded-md border border-transparent bg-pal3 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                                        className=" justify-center inline-flex w-full items-center rounded-md border border-transparent bg-pal3 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-pal3 focus:outline-none focus:ring-2 focus:ring-pal3 focus:ring-offset-2"
                                                     >
                                                         < CurrencyDollarIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
                                                         Comprar lo agregado al carrito
